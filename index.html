@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check Your Books, an AI data-quality auditor for bookkeeping exports</title>
+<meta name="description" content="Paste or upload an invoice export and get a ranked data-quality report. Deterministic rules catch duplicates, outliers, broken references, contradictions, and bad dates, and the AI writes the plain-English findings. Runs in your browser, no account, nothing leaves the page.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1>Check Your Books</h1>
+    <p class="tagline">Paste or upload an invoice export and get a ranked data-quality report. The tool finds the duplicates, outliers, broken references, contradictions, and bad dates that make a book untrustworthy, then explains each one in plain English. It runs entirely in your browser. No account, and nothing leaves this page.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <details class="panel settings" id="settings-panel">
+    <summary>Settings and API key <span id="mode-badge" class="mode-badge demo">DEMO mode</span></summary>
+    <div class="settings-body">
+      <p class="muted">You do not need a key to try this. Load the sample and click Audit and you get the full report offline. The detection is real either way: the duplicates, outliers, broken references, and bad dates are found by deterministic code, not guessed.</p>
+      <p class="muted">In DEMO mode the finding wording ships prepared. Add your own Anthropic API key to switch to LIVE mode, where the page calls Claude directly from your browser to write the finding wording and weigh in on severity. Your key is stored only in this browser, in localStorage. Nothing is sent to any server of ours, because there is no server.</p>
+      <label class="key-row">Anthropic API key
+        <input type="password" id="api-key" placeholder="sk-ant-..." autocomplete="off">
+      </label>
+      <div class="actions">
+        <button id="save-key" class="btn btn-primary">Save key</button>
+        <button id="clear-key" class="btn">Clear key</button>
+        <span class="muted" id="key-status"></span>
+      </div>
+      <p class="model-line">LIVE mode model: <code id="model-id"></code>. A single audit costs a few cents at most, billed to your own Anthropic account. A cheaper model works too if you switch the constant in the kernel.</p>
+    </div>
+  </details>
+
+  <section class="panel" id="input-panel">
+    <h2><span class="step-num">1</span> Give it a dataset</h2>
+    <p class="muted">Paste an invoice export as CSV, upload a .csv file, or load the built-in sample to see how it works.</p>
+    <div class="input-actions">
+      <button id="load-sample" class="btn" type="button">Load the sample messy export</button>
+      <label class="file-btn btn" for="csv-file">Upload a .csv file</label>
+      <input type="file" id="csv-file" accept=".csv,text/csv" class="visually-hidden">
+      <span class="muted" id="file-name"></span>
+    </div>
+    <textarea id="csv-text" spellcheck="false" placeholder="Invoice #,Client,Amount,Issue Date,Due Date,Status,Paid Date&#10;INV-1001,Northwind Cafe,$1,250.00,01/15/2026,02/14/2026,Paid,01/29/2026&#10;..."></textarea>
+    <div class="actions">
+      <button id="audit" class="btn btn-primary" type="button">Audit</button>
+      <span class="muted" id="input-hint">The sample is a synthetic dirty invoice export, made up and generated in your browser.</span>
+    </div>
+  </section>
+
+  <section class="panel hidden" id="report-panel">
+    <h2><span class="step-num">2</span> Data-quality report <span id="src-badge" class="src-badge demo">DEMO</span></h2>
+
+    <div id="error-alert" class="error-alert hidden"></div>
+
+    <div id="report-body">
+      <div class="score-row">
+        <div class="stat-tile score-tile">
+          <div class="stat-value" id="trust-score"></div>
+          <div class="stat-label">Books trust score, out of 100</div>
+        </div>
+        <div class="summary-tiles">
+          <div class="summary-tile sev-high"><div class="summary-num" id="count-high"></div><div class="summary-label">High issues</div></div>
+          <div class="summary-tile sev-medium"><div class="summary-num" id="count-medium"></div><div class="summary-label">Medium issues</div></div>
+          <div class="summary-tile sev-low"><div class="summary-num" id="count-low"></div><div class="summary-label">Low issues</div></div>
+          <div class="summary-tile sev-rows"><div class="summary-num" id="count-rows"></div><div class="summary-label">Rows affected</div></div>
+        </div>
+      </div>
+
+      <h3>Findings, most severe first</h3>
+      <div id="findings"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer wrap">
+  <p>The detection is deterministic code and runs entirely client-side. The sample data is synthetic. <a href="https://github.com/bengodgart/check-your-books">Source on GitHub</a>.</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
