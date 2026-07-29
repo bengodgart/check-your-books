@@ -9,7 +9,7 @@ pricing: Free. Optional live mode uses the reader's own Anthropic API key, bille
 resource: https://github.com/bengodgart/check-your-books.git
 generated:
   by: claude-opus-5
-  at: '2026-07-29T00:45:00+00:00'
+  at: '2026-07-29T04:24:12+00:00'
 status: stable
 ---
 
