@@ -4,7 +4,7 @@ title: Check Your Books
 description: A free single-page tool that audits a bookkeeping invoice export for data-quality problems and returns a ranked report with a trust score.
 domain: Data & Analytics
 users: Small business owners and bookkeepers checking an export before anyone trusts the totals; also hiring readers evaluating the portfolio.
-lifecycle: shipped
+lifecycle: 'built and public on GitHub. Not deployed: no GitHub Pages site, and its Pages URL returns 404.'
 pricing: Free. Optional live mode uses the reader's own Anthropic API key, billed to their account, a few cents per audit.
 resource: https://github.com/bengodgart/check-your-books.git
 generated:

@@ -1,3 +1,3 @@
 # Playbook
 
-* [Run Check Your Books locally](run-locally.md) - Serve the folder over a local web server; there is no install and no build step.
+* [Run Check Your Books locally](run-locally.md) - How to serve Check Your Books and run its tests on a dev machine.

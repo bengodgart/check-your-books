@@ -14,4 +14,4 @@ description: A free, single-page tool that audits a bookkeeping export for data-
 
 # Tech Stack
 
-* [check-your-books stack](stack.md) - Frameworks, storage and services check-your-books runs on.
+* [Check Your Books stack](stack.md) - Frameworks, storage and services Check Your Books runs on.

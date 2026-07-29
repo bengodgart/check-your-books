@@ -1,38 +1,36 @@
 ---
 type: Playbook
 title: Run Check Your Books locally
-description: Serve the folder over a local web server; there is no install and no build step.
+description: 'How to serve Check Your Books and run its tests on a dev machine.'
 generated:
   by: claude-opus-5
-  at: '2026-07-29T00:45:00+00:00'
+  at: '2026-07-29T06:00:00+00:00'
 status: stable
 ---
 
 # Steps
 
-1. From inside the project folder, start any static server:
+1. Clone the repo: `git clone https://github.com/bengodgart/check-your-books.git`
+2. `cd check-your-books`
+3. `python -m http.server 8000`, then open `http://localhost:8000`.
+4. Click **Load the sample messy export**, then **Audit**. The full report appears with no
+   key needed.
 
-   ```
-   python -m http.server 8000
-   ```
+## Optional live mode
 
-2. Open `http://localhost:8000`.
-3. Click **Load the sample messy export**, then **Audit**. The full report appears with
-   no API key needed.
-4. Optional live mode: open **Settings and API key**, paste an Anthropic API key, click
-   **Save key**. The badge flips to LIVE and the next audit calls Claude from the browser
-   to write the finding narrative. The key is stored in that browser's localStorage only.
+Open **Settings and API key**, paste an Anthropic API key, and click **Save key**. The badge
+flips to LIVE and the next audit calls Claude directly from the browser to write each
+finding. A single audit costs a few cents at most, billed to that account.
 
-# Common failures
+## Available scripts
 
-* **Blank page from a double-clicked `index.html`.** The JavaScript modules only load over
-  `http://`, not `file://`. Serve the folder.
-* **Badge still says DEMO after saving a key.** The key is per-browser; a different browser
-  or a cleared localStorage starts back in demo mode.
-* **Findings look identical with and without a key.** That is correct. Detection is
-  deterministic either way; the key only changes who writes the wording.
+* `node test-node.mjs` runs the kernel test. It parses the dirty sample, runs the auditor in
+  demo mode, confirms every planted defect is caught with the right rows and severity, and
+  prints `ALL PASS`.
 
-# Deploy
+## Common failures
 
-Any free static host serves it unchanged - GitHub Pages, a Netlify drop. There is no
-backend to deploy.
+* **Opening `index.html` directly from disk does not work.** The JavaScript loads as ES
+  modules, which browsers only allow over `http://`. Serve the folder as in step 3.
+* Today is fixed at 2026-07-15 in the sample data on purpose, so the overdue and future-date
+  maths stays stable across loads.
